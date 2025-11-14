@@ -41,4 +41,47 @@ It can be started by:<br/>
 - -c a for course A
 - -p path to the data set
 
+## Insole pressure danger detection
+The repository also contains a small utility that inspects the normalized insole
+pressure channels and highlights frames that might correspond to hazardous
+stances (e.g. extreme forefoot loading or sudden pressure shifts).
+
+### Running the analysis
+1. Ensure your virtual environment is activated and dependencies are installed
+   (see the [Setup](#setup) section above).
+2. Invoke the CLI with the CSV that came from `data_frame_extractor.py` or any
+   file that follows the same column naming scheme:
+
+```shell
+PYTHONPATH=$(pwd) python src/insole_danger_detection.py path/to/insole_only.csv \
+  --output annotated.csv
+```
+
+The script prints a short summary of the triggered danger conditions. Supplying
+`--output` is optional; if present, the annotated CSV (including engineered
+features and boolean danger flags) is written to that location.
+
+### Adjusting thresholds
+All heuristics are configurable via CLI switches. For example, to raise the
+single-sensor overload threshold and require a larger jump in total pressure
+before flagging sudden changes:
+
+```shell
+PYTHONPATH=$(pwd) python src/insole_danger_detection.py path/to/insole_only.csv \
+  --max-pressure 0.95 --pressure-jump 0.35
+```
+
+Run `PYTHONPATH=$(pwd) python src/insole_danger_detection.py --help` to see the
+full list of tunable parameters.
+
+### Quick smoke test
+Because the module is pure Python, you can perform a basic syntax check with
+`python -m compileall`:
+
+```shell
+python -m compileall src/insole_danger_detection.py
+```
+
+This command completes silently if the file is syntactically correct.
+
 
