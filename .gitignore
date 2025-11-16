@@ -30,3 +30,16 @@ annotated.csv
 # Large data files
 src/data/*.csv
 
+# ML artifacts
+ml_models/trained_models/*.pkl
+ml_models/trained_models/*.joblib
+ml_models/trained_models/*.h5
+ml_models/notebooks/.ipynb_checkpoints/
+ml_models/cache/
+*.pkl
+*.joblib
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+

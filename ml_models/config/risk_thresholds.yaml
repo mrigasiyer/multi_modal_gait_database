@@ -1,0 +1,133 @@
+# Biomechanical Risk Thresholds for Injury Detection
+# Based on sports medicine and gait analysis research
+
+# Joint Angle Thresholds (degrees)
+joint_angles:
+  knee_flexion:
+    safe_range: [0, 90]        # Safe knee bend during stance
+    warning_range: [90, 110]   # Moderate risk
+    danger_range: [110, 180]   # High risk of strain
+  
+  ankle_angle:
+    safe_range: [-20, 30]      # Dorsiflexion to plantarflexion
+    warning_range: [-30, -20]  # Excessive dorsiflexion
+    danger_range: [-45, -30]   # Ankle roll risk
+  
+  hip_flexion:
+    safe_range: [-20, 120]     # Normal hip ROM
+    warning_range: [120, 140]  # Hyperflexion
+    danger_range: [140, 180]   # Extreme hyperflexion
+  
+  spine_flexion:
+    safe_range: [-10, 30]      # Slight lean forward is OK
+    warning_range: [30, 45]    # Forward lean
+    danger_range: [45, 90]     # Excessive forward lean
+  
+  spine_rotation:
+    safe_range: [-15, 15]      # Minimal twisting
+    warning_range: [15, 30]    # Moderate twisting
+    danger_range: [30, 90]     # Excessive twisting (injury risk)
+
+# Balance & Stability Thresholds
+balance:
+  com_lateral_sway:           # Center of mass lateral movement (cm)
+    safe: 3.0
+    warning: 5.0
+    danger: 8.0
+  
+  com_vertical_oscillation:   # Bouncing motion (cm)
+    safe: 4.0
+    warning: 6.0
+    danger: 10.0
+  
+  base_of_support_width:      # Step width (cm)
+    too_narrow: 5.0           # Unstable if < 5cm
+    safe_min: 8.0
+    safe_max: 15.0
+    too_wide: 20.0            # Compensation for instability
+  
+  single_leg_stance_time:     # Time on one leg (seconds)
+    safe: 0.8
+    warning: 1.5
+    danger: 3.0               # Balance loss risk
+
+# Impact & Force Thresholds
+impact:
+  peak_acceleration:          # Peak vertical acceleration (g-force)
+    safe: 2.0
+    warning: 3.0
+    danger: 5.0               # Excessive impact
+  
+  loading_rate:               # How fast force increases (BW/s)
+    safe: 50.0
+    warning: 80.0
+    danger: 120.0
+  
+  jerk_magnitude:             # Smoothness of movement (m/s³)
+    safe: 20.0
+    warning: 40.0
+    danger: 80.0              # Jerky, uncontrolled movement
+
+# Pressure Distribution (from insoles)
+pressure:
+  max_single_sensor:          # % of total pressure on one sensor
+    safe: 0.30                # 30%
+    warning: 0.50             # 50%
+    danger: 0.70              # 70% - extreme localized pressure
+  
+  forefoot_heel_ratio:        # Forefoot pressure / heel pressure
+    safe_min: 0.4
+    safe_max: 1.5
+    warning_low: 0.2          # Too much heel
+    warning_high: 2.0         # Too much forefoot
+    danger_high: 3.0          # Excessive forefoot loading
+  
+  pressure_asymmetry:         # Left vs right foot pressure difference
+    safe: 0.10                # 10% difference OK
+    warning: 0.20             # 20% difference
+    danger: 0.35              # 35% difference (limping)
+
+# Movement Quality Thresholds
+movement_quality:
+  step_variability_cv:        # Coefficient of variation for step time
+    safe: 0.05                # 5% variation
+    warning: 0.10             # 10% variation
+    danger: 0.20              # 20% variation (fatigue/instability)
+  
+  stride_length_asymmetry:    # Left vs right stride length difference (%)
+    safe: 0.05                # 5%
+    warning: 0.15             # 15%
+    danger: 0.30              # 30% (limping/compensation)
+  
+  toe_clearance:              # Minimum toe height during swing (cm)
+    danger: 1.0               # < 1cm = tripping risk
+    warning: 2.0
+    safe: 3.0                 # > 3cm is safe
+
+# Temporal Patterns
+temporal:
+  sudden_stop_deceleration:   # Deceleration rate (m/s²)
+    safe: 2.0
+    warning: 4.0
+    danger: 8.0
+  
+  rapid_direction_change:     # Angular velocity (deg/s)
+    safe: 90.0
+    warning: 180.0
+    danger: 360.0
+
+# Risk Scoring Weights (how much each factor contributes to total risk)
+risk_weights:
+  joint_angles: 0.25
+  balance: 0.25
+  impact: 0.20
+  pressure: 0.15
+  movement_quality: 0.10
+  temporal: 0.05
+
+# Overall Risk Score Classification
+risk_levels:
+  low: [0, 0.3]               # Risk score 0-0.3
+  medium: [0.3, 0.6]          # Risk score 0.3-0.6
+  high: [0.6, 1.0]            # Risk score 0.6-1.0
+
