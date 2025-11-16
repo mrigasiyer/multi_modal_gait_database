@@ -9,18 +9,68 @@ These videos provide an impression of the available data that is based on record
 - [course B](https://github.com/HRI-EU/multi_modal_gait_database/blob/master/videos/courseB_2.mp4)
 - [course C](https://github.com/HRI-EU/multi_modal_gait_database/blob/master/videos/courseC_2.mp4)
 
-## Setup
-- Download the data set
-- Create a new virtual environment (we name it `my_venv`) and activate it
-```shell
-python3 -m venv ./my_venv
-source ./my_venv/bin/activate
+## Quick Start: Running the 3D Visualizer
+
+### Prerequisites
+- Python 3.9 or higher
+- macOS, Linux, or Windows
+- Git
+
+### Step 1: Clone the Repository
+```bash
+git clone https://github.com/YOUR_USERNAME/multi_modal_gait_database.git
+cd multi_modal_gait_database
 ```
 
-- Install requirements
-```shell
+### Step 2: Create Virtual Environment
+```bash
+python3 -m venv my_venv
+source my_venv/bin/activate  # On Windows: my_venv\Scripts\activate
+```
+
+### Step 3: Install Dependencies
+```bash
 pip install -r requirements.txt
 ```
+
+### Step 4: Add Your Data Files
+The repository excludes large CSV data files. You need to add your own data files to `src/data/`:
+
+```bash
+# Create the data directory if it doesn't exist
+mkdir -p src/data
+
+# Add your CSV files (download these from the dataset)
+# Place the following files in src/data/:
+#   - xsens.csv      (XSens motion capture data)
+#   - insoles.csv    (Pressure sensor data)
+#   - eyetracker.csv (Eye tracking data)
+#   - labels.csv     (Ground truth labels)
+```
+
+### Step 5: Run the 3D Visualizer
+```bash
+python simple_3d_visualizer.py
+```
+
+This will open an interactive 3D window showing the human gait animation!
+
+**Controls:**
+- **Play/Pause button**: Start/stop animation
+- **Speed buttons**: 0.5x, 1x, 2x, 4x playback speed
+- **Slider**: Scrub through frames manually
+- **Mouse drag**: Rotate the 3D view
+- **Scroll wheel**: Zoom in/out
+
+**Note for M1/M2/M3 Mac users:** The `simple_3d_visualizer.py` uses matplotlib for rendering, which works perfectly on Apple Silicon. The original OpenGL-based visualizer has known compatibility issues with PyQt5's deprecated QGLWidget on M-series Macs.
+
+### Deactivating Virtual Environment
+When you're done:
+```bash
+deactivate
+```
+
+## Full Setup for Data Processing
 
 ## Generate pandas data frame from .csv files
 We provide a script that generates one pandas data frame stored as pickle file from the single recording .csv files. This is quite handy for further processing or analysis.<br/>
@@ -83,5 +133,116 @@ python -m compileall src/insole_danger_detection.py
 ```
 
 This command completes silently if the file is syntactically correct.
+
+## Available Visualizers
+
+### 1. Simple 3D Visualizer (Recommended for M1/M2/M3 Macs)
+**File:** `simple_3d_visualizer.py`
+
+A matplotlib-based 3D visualizer that works on all platforms, especially Apple Silicon Macs.
+
+**Features:**
+- Interactive 3D skeleton visualization
+- Playback controls with variable speed (0.5x, 1x, 2x, 4x)
+- Timeline scrubber
+- Mouse-controlled rotation and zoom
+- Color-coded body segments
+
+**Run it:**
+```bash
+python simple_3d_visualizer.py
+```
+
+### 2. Original OpenGL Visualizer (Legacy)
+**File:** `src/run_visualizer.py`
+
+The original OpenGL-based visualizer with more detailed 3D models.
+
+**Known Issues:**
+- Does not render properly on M1/M2/M3 Macs due to PyQt5's QGLWidget compatibility issues
+- Works on Intel Macs and Linux systems
+
+**Run it:**
+```bash
+PYTHONPATH=$(pwd) python src/run_visualizer.py
+```
+
+## Troubleshooting
+
+### Virtual Environment Issues
+If you have trouble activating the virtual environment:
+```bash
+# Make sure you're in the project directory
+cd multi_modal_gait_database
+
+# Try recreating the virtual environment
+rm -rf my_venv
+python3 -m venv my_venv
+source my_venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Missing Data Files
+If you see "File not found" errors for CSV files:
+1. Make sure the `src/data/` directory exists
+2. Download the dataset from the original source
+3. Place the CSV files in `src/data/` directory
+
+### Black Screen on M1/M2/M3 Mac
+If the OpenGL visualizer shows only a black screen:
+- This is a known issue with PyQt5's QGLWidget on Apple Silicon
+- **Solution:** Use `simple_3d_visualizer.py` instead
+
+### Import Errors
+If you see module import errors:
+```bash
+# Make sure virtual environment is activated
+source my_venv/bin/activate  # Should show (my_venv) in your prompt
+
+# Reinstall requirements
+pip install --upgrade -r requirements.txt
+```
+
+### Python Version Issues
+This project requires Python 3.9 or higher. Check your version:
+```bash
+python3 --version
+```
+
+If you need to use a specific Python version:
+```bash
+python3.9 -m venv my_venv  # Replace 3.9 with your version
+```
+
+## Project Structure
+
+```
+multi_modal_gait_database/
+├── simple_3d_visualizer.py       # M2 Mac compatible visualizer
+├── requirements.txt              # Python dependencies
+├── src/
+│   ├── data/                     # CSV data files (not in repo)
+│   │   ├── xsens.csv
+│   │   ├── insoles.csv
+│   │   ├── eyetracker.csv
+│   │   └── labels.csv
+│   ├── visualizers/              # Visualization modules
+│   ├── run_visualizer.py         # Legacy OpenGL visualizer
+│   ├── data_frame_extractor.py   # Data processing
+│   ├── labeling_tool.py          # Labeling interface
+│   └── insole_danger_detection.py # Safety analysis
+└── videos/                       # Example videos
+    ├── courseA_2.mp4
+    ├── courseB_2.mp4
+    └── courseC_2.mp4
+```
+
+## Citation
+
+If you use this dataset, please cite:
+```
+V. Losing & M. Hasenjäger, "A Multi-Modal Gait Database of Natural Everyday-Walk 
+in an Urban Environment", 2022.
+```
 
 
